@@ -259,5 +259,6 @@ pub/
 .eshopdocker_*
 \.vscode/
 
+#NAO ESQUECER DE TIRAR O TRAÇO ANTES
 appsettings.Azure.json
-teste.pdf
+appsettings.json
