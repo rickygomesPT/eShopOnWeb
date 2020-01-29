@@ -21,6 +21,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<BasketItem> BasketItems { get; set; }
 
+      
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

@@ -18,6 +18,8 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 // TODO: Only run this if using a real database
                 // context.Database.Migrate();
 
+     
+
                 if (!catalogContext.CatalogBrands.Any())
                 {
                     catalogContext.CatalogBrands.AddRange(
@@ -77,7 +79,7 @@ namespace Microsoft.eShopWeb.Infrastructure.Data
                 new CatalogType() { Type = "USB Memory Stick" }
             };
         }
-
+        
         static IEnumerable<CatalogItem> GetPreconfiguredItems()
         {
             return new List<CatalogItem>()

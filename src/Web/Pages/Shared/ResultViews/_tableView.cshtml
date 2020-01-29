@@ -1,0 +1,23 @@
+﻿@model IEnumerable<CatalogItemViewModel>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th> Produto </th>
+            <th> Imagem </th>
+            <th> Preço </th>
+            <th> Comprar </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var catalogItem in Model)
+        {
+            <tr>
+                <td> @catalogItem.Name </td>
+                <td> <img src="@Html.DisplayFor(modelItem => catalogItem.PictureUri)"  style="height:50px;width:100px;"/> </td>
+                <td> @catalogItem.Price </td>
+                <td> <input class="esh-catalog-button" type="submit" value="[ Adicionar ao Carrinho ]" />  </td>
+            </tr>
+        }
+    </tbody>
+</table>
