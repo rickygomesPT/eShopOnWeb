@@ -5,6 +5,7 @@ using Microsoft.eShopWeb.Web.ViewModels;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.eShopWeb.Web.Extensions;
 using System.Threading;
+using System;
 
 namespace Microsoft.eShopWeb.Web.Services
 {
@@ -29,15 +30,37 @@ namespace Microsoft.eShopWeb.Web.Services
             });
         }
 
-        public async Task<CatalogIndexViewModel> GetCatalogItems(int pageIndex, int itemsPage, int? brandId, int? typeId, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<CatalogIndexViewModel> GetCatalogItems(
+            int pageIndex, int itemsPage,
+            string searchText,
+            int? brandId, int? typeId,
+            bool convertPrice = true,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            var cacheKey = CacheHelpers.GenerateCatalogItemCacheKey(pageIndex, Constants.ITEMS_PER_PAGE, brandId, typeId);
+            var cacheKey = CacheHelpers.GenerateCatalogItemCacheKey(
+                pageIndex,
+                Constants.ITEMS_PER_PAGE,
+                searchText,
+                brandId,
+                typeId);
 
             return await _cache.GetOrCreateAsync(cacheKey, async entry =>
             {
                 entry.SlidingExpiration = CacheHelpers.DefaultCacheDuration;
-                return await _catalogViewModelService.GetCatalogItems(pageIndex, itemsPage, brandId, typeId, cancellationToken);
+                return await _catalogViewModelService.GetCatalogItems(
+                    pageIndex, itemsPage, searchText, brandId, typeId,
+                    convertPrice, cancellationToken);
             });
+        }
+
+        public async Task<CatalogItemViewModel> GetItemById(int id, bool convertPrice = true, CancellationToken cancellationToken = default)
+        {
+            return await _cache.GetOrCreateAsync(
+                CacheHelpers.GenerateCatalogItemIdKey(id), async entry =>
+                {
+                    entry.SlidingExpiration = CacheHelpers.DefaultCacheDuration;
+                    return await _catalogViewModelService.GetItemById(id, convertPrice, cancellationToken);
+                });
         }
 
         public async Task<IEnumerable<SelectListItem>> GetTypes(CancellationToken cancellationToken = default(CancellationToken))

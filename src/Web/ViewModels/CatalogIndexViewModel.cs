@@ -13,5 +13,7 @@ namespace Microsoft.eShopWeb.Web.ViewModels
         public int? TypesFilterApplied { get; set; }
         public ResultView ResultView { get; set; } = ResultView.Grid;
         public PaginationInfoViewModel PaginationInfo { get; set; }
+
+        public string SearchText { get; set; }
     }
 }
