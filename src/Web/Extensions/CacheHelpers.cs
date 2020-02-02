@@ -2,6 +2,9 @@
 
 namespace Microsoft.eShopWeb.Web.Extensions
 {
+    public class InvalidPageIndexException: Exception {
+    }
+
     public static class CacheHelpers
     {
         public static readonly TimeSpan DefaultCacheDuration = TimeSpan.FromSeconds(30);
