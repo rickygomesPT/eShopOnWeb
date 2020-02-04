@@ -49,12 +49,36 @@ namespace Microsoft.eShopWeb.UnitTests.ApplicationCore.Services.BasketServiceTes
             basket.AddItem(itemId, 10, 1);
             var targetItem = basket.Items.First();
             targetItem.Id = itemId;
-            // targetItem.Id = itemId;
             _mockBasketRepo.Setup(
                 x => x.GetByIdAsync(basketId)).ReturnsAsync(basket);
 
             var basketService = new BasketService(_mockBasketRepo.Object, null);
             var targetItemQty = 5;
+            var quantities = new System.Collections.Generic.Dictionary<string, int>() {
+                { itemId.ToString(), targetItemQty }
+            };
+            await basketService.SetQuantities(
+                    basketId,
+                    quantities);
+            Assert.Equal(targetItemQty, targetItem.Quantity);
+            _mockBasketRepo.Verify(x => x.UpdateAsync(basket), Times.Once());
+        }
+
+        [Fact]
+        public async Task SetQuantityToZero_RemovesItemFromBasket()
+        {
+            var basketId = 10;
+            var basket = new Basket();
+            var itemId = 1;
+            var initialQty = 5;
+            basket.AddItem(itemId, 10, 1);
+            var targetItem = basket.Items.First();
+            targetItem.Id = itemId;
+            _mockBasketRepo.Setup(
+                x => x.GetByIdAsync(basketId)).ReturnsAsync(basket);
+
+            var basketService = new BasketService(_mockBasketRepo.Object, null);
+            var targetItemQty = -initialQty;
             var quantities = new System.Collections.Generic.Dictionary<string, int>() {
                 { itemId.ToString(), targetItemQty }
             };
