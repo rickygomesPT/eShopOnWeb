@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace Microsoft.eShopWeb.Web.Pages.Admin
 {
     [Authorize(Roles = AuthorizationConstants.Roles.ADMINISTRATORS)]
+    //[Authorize(Roles="Administrators")]
     public class IndexModel : PageModel
     {
         private readonly ICatalogViewModelService _catalogViewModelService;

@@ -8,6 +8,7 @@
         <img class="esh-catalog-title" src="~/images/main_banner_text.png" />
     </div>
 </section>
+
 <section class="esh-catalog-filters">
     <div class="container">
         <form method="get">
@@ -22,25 +23,28 @@
         </form>
     </div>
 </section>
-<div class="container">
-    @if (Model.CatalogModel.CatalogItems.Any())
-    {
-        <partial name="_pagination" for="CatalogModel.PaginationInfo" />
-
-        <div class="esh-catalog-items row">
-            @foreach (var catalogItem in Model.CatalogModel.CatalogItems)
-            {
-                <div class="esh-catalog-item col-md-4">
-                    <partial name="_editCatalog" for="@catalogItem" />
-                </div>
-            }
-        </div>
-        <partial name="_pagination" for="CatalogModel.PaginationInfo" />
-    }
-    else
-    {
-        <div class="esh-catalog-items row">
-            THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
-        </div>
-    }
+<div class="container-fluid">
+    <a class="btn btn-success" asp-page="/Admin/AddCatalogItem">Add Product</a>
 </div>
+    <div class="container">
+        @if (Model.CatalogModel.CatalogItems.Any())
+        {
+            <partial name="_pagination" for="CatalogModel.PaginationInfo" />
+
+            <div class="esh-catalog-items row">
+                @foreach (var catalogItem in Model.CatalogModel.CatalogItems)
+                {
+                    <div class="esh-catalog-item col-md-4">
+                        <partial name="_editCatalog" for="@catalogItem" />
+                    </div>
+                }
+            </div>
+            <partial name="_pagination" for="CatalogModel.PaginationInfo" />
+        }
+        else
+        {
+            <div class="esh-catalog-items row">
+                THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
+            </div>
+        }
+    </div>
