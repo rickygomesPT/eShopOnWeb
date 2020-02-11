@@ -1,20 +1,28 @@
 ﻿@model CatalogItemViewModel
 
-<form asp-page="/Basket/Index" method="post">
-    <img class="esh-catalog-thumbnail" src="@Model.PictureUri" />
-    <input class="esh-catalog-button" type="submit" value="[ ADD TO BASKET ]" />
-    <div class="esh-catalog-name">
-        <span>@Model.Name</span>
-    </div>
-    @if (@Model.ShowPrice)
-    {
-        <div class="esh-catalog-price">
-            <span class="item--price">@Model.Price.ToString("N2")</span>
-            <span class="item--price-unit">@Model.PriceUnit.ToString()</span>
+    <form asp-page="/Basket/Index" method="post">
+        <img class="esh-catalog-thumbnail" src="@Model.PictureUri" />
+        <input class="esh-catalog-button" type="submit" value="[ ADD TO BASKET ]" />
+        <div class="esh-catalog-name">
+            <span>@Model.Name</span>
         </div>
-    }
-    <input type="hidden" asp-for="@Model.Id" name="id" />
-    <input type="hidden" asp-for="@Model.Name" name="name" />
-    <input type="hidden" asp-for="@Model.PictureUri" name="pictureUri" />
-    <input type="hidden" asp-for="@Model.Price" name="price" />
-</form>
+        @if (@Model.ShowPrice)
+        {
+            <div class="esh-catalog-price">
+                <span class="item--price">@Model.Price.ToString("N2")</span>
+                <span class="item--price-unit">@Model.PriceUnit.ToString()</span>
+            </div>
+        }
+        <input type="hidden" asp-for="@Model.Id" name="id" />
+        <input type="hidden" asp-for="@Model.Name" name="name" />
+        <input type="hidden" asp-for="@Model.PictureUri" name="pictureUri" />
+        <input type="hidden" asp-for="@Model.Price" name="price" />
+        <input type="hidden" asp-for="@Model.qntStock" name="qntStock" />
+    </form>
+
+    <form asp-page="/Wishlist/Index" method="post">
+        <input class="esh-catalog-button" type="submit" value="[ ADD TO WISHLIST ]" />
+        <input type="hidden" asp-for="@Model.Id" name="id" />
+        <input type="hidden" asp-for="@Model.Name" name="name" />
+        <input type="hidden" asp-for="@Model.PictureUri" name="pictureUri" />
+    </form>

@@ -20,11 +20,12 @@
             </label>
             <input type="text" asp-for="@Model.CatalogModel.SearchText" />
             <input class="esh-catalog-send" type="image" src="images/arrow-right.svg" />
+            <a class="esh-identity-item m-2" asp-page="/Admin/AddCatalogItem"> Add Product </a>
         </form>
     </div>
 </section>
 <div class="container-fluid">
-    <a class="btn btn-success" asp-page="/Admin/AddCatalogItem">Add Product</a>
+    @*<a class="btn btn-success" asp-page="/Admin/AddCatalogItem">Add Product</a>*@
 </div>
     <div class="container">
         @if (Model.CatalogModel.CatalogItems.Any())
