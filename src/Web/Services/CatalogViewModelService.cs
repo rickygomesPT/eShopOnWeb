@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using Microsoft.Extensions.Configuration;
 
 namespace Microsoft.eShopWeb.Web.Services
 {
@@ -31,6 +32,7 @@ namespace Microsoft.eShopWeb.Web.Services
         private readonly IAsyncRepository<CatalogType> _typeRepository;
         private readonly IUriComposer _uriComposer;
         private readonly ICurrencyService _currencyService;
+        private readonly IConfiguration _configuration;
 
         private readonly CatalogContext _catalogContext;
 
@@ -43,7 +45,8 @@ namespace Microsoft.eShopWeb.Web.Services
             IAsyncRepository<CatalogType> typeRepository,
             IUriComposer uriComposer,
             ICurrencyService currencyService,
-            CatalogContext catalogContext
+            CatalogContext catalogContext,
+            IConfiguration configuration
         )
         {
             _logger = loggerFactory.CreateLogger<CatalogViewModelService>();
@@ -53,6 +56,7 @@ namespace Microsoft.eShopWeb.Web.Services
             _uriComposer = uriComposer;
             _currencyService = currencyService;
             _catalogContext = catalogContext;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -133,11 +137,16 @@ namespace Microsoft.eShopWeb.Web.Services
 
             foreach (var itemOnPage in itemsOnPage)
             {
-                itemOnPage.PictureUri = _uriComposer.ComposePicUri(itemOnPage.PictureUri);
+                itemOnPage.PictureUri = string.IsNullOrEmpty(itemOnPage.PictureUri)
+                     ? _configuration.GetValue<string>("ImagePictureUri")
+                     : _uriComposer.ComposePicUri(itemOnPage.PictureUri);
             }
             var CatalogItemsTask = Task.WhenAll(itemsOnPage.Select(
                 catalogItem => CreateCatalogItemViewModelAsync(catalogItem, convertPrice, cancellationToken)));
             cancellationToken.ThrowIfCancellationRequested();
+            
+          
+
             var vm = new CatalogIndexViewModel()
             {
                 CatalogItems = await CatalogItemsTask, // catalogItemsList,
