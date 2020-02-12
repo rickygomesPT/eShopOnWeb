@@ -21,6 +21,8 @@ namespace Web.Extensions
             services.AddScoped<ICatalogViewModelService, CachedCatalogViewModelService>();
             services.AddScoped<IBasketService, BasketService>();
             services.AddScoped<IBasketViewModelService, BasketViewModelService>();
+            services.AddScoped<IWishlistService, WishlistService>();
+            services.AddScoped<IWishlistViewModelService, WishlistViewModelService>();
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<CatalogViewModelService>();

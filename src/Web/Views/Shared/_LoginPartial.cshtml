@@ -1,4 +1,5 @@
-﻿@if (Context.User.Identity.IsAuthenticated)
+﻿
+@if (Context.User.Identity.IsAuthenticated)
 {
     <section class="col-lg-4 col-md-5 col-xs-12">
         <div class="esh-identity">
@@ -24,6 +25,10 @@
                        asp-controller="Manage"
                        asp-action="MyAccount">
                         <div class="esh-identity-name esh-identity-name--upper">My account</div>
+                    </a>
+                    <a class="esh-identity-item"
+                       asp-page="/Wishlist/Index">
+                        <div class="esh-identity-name esh-identity-name--upper">My wishlist</div>
                     </a>
                     <a class="esh-identity-item" href="javascript:document.getElementById('logoutForm').submit()">
                         <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
