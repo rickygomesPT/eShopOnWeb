@@ -16,5 +16,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
         public CatalogType CatalogType { get; set; }
         public CatalogBrand CatalogBrand { get; set; }
         #endregion
+
+        //STOCK
+        public int qntStock { get; set; }
     }
 }

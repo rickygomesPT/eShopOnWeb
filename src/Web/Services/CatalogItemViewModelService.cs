@@ -41,6 +41,7 @@ namespace Microsoft.eShopWeb.Web.Services
             {
                 Name = viewModel.Name,
                 Price = viewModel.Price,
+                PictureUri = viewModel.PictureUri,
                 ShowPrice = viewModel.ShowPrice,
                 qntStock = viewModel.qntStock
             };
@@ -54,7 +55,7 @@ namespace Microsoft.eShopWeb.Web.Services
             var existingCatalogItem = await _catalogItemRepository.GetByIdAsync(viewModel.Id);
 
             var removeCatalogItem = existingCatalogItem;
-            removeCatalogItem.Name = viewModel.Name;
+            removeCatalogItem.Id = viewModel.Id;
 
             await _catalogItemRepository.DeleteAsync(removeCatalogItem);
 
