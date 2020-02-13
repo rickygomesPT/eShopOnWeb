@@ -1,4 +1,6 @@
 ﻿@page
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 @model LoginModel
 
 @{
@@ -52,6 +54,9 @@
                     <p>
                         Password: <b>Pass@word1</b>
                     </p>
+
+                    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
+                    <a href="#" onclick="signOut();">Sign out</a>
                 </form>
             </section>
         </div>
@@ -61,3 +66,20 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+@{
+    var googleAuthNSection = Configuration.GetSection("Authentication:Google");
+    var ClientId = googleAuthNSection["ClientId"];
+}
+<meta name="google-signin-scope" content="profile email">
+<meta name="google-signin-client_id" content="@ClientId">
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+
+<script>
+    function signOut() {
+        var auth2 = gapi.auth2.getAuthInstance();
+        auth2.signOut().then(function () {
+            console.log('User signed out.');
+        });
+    }
+</script>

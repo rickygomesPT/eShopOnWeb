@@ -35,6 +35,7 @@ using Newtonsoft.Json;
 
 using Web.Extensions;
 using Web.Extensions.Middleware;
+using SendGrid;
 
 [assembly : ApiConventionType(typeof(DefaultApiConventions))]
 namespace Microsoft.eShopWeb.Web {
@@ -140,7 +141,18 @@ namespace Microsoft.eShopWeb.Web {
             services.AddScoped(typeof(IAsyncRepository<>), typeof(EfRepository<>));
             services.AddCatalogServices(Configuration);
             services.AddScoped(typeof(IAppLogger<>), typeof(LoggerAdapter<>));
+            services.AddSingleton<ISendGridClient>(provider =>
+            {
+                var key = Configuration.GetValue<string>("SendGrid:ApiKey");
+                return new SendGridClient(key);
+            });
             services.AddTransient<IEmailSender, EmailSender>();
+
+            //GOOGLE SIGN-IN
+            var configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.AddConfiguration(Configuration);
+            var configuration = configurationBuilder.Build();
+            services.AddSingleton<IConfiguration>(configuration);
 
             // Add memory cache services
             services.AddMemoryCache();
@@ -166,6 +178,14 @@ namespace Microsoft.eShopWeb.Web {
             services.AddSwaggerGen(c => c.SwaggerDoc("v1", new OpenApi.Models.OpenApiInfo { Title = "My API", Version = "v1" }));
 
             services.AddHealthChecks();
+
+            //LOGIN GOOGLE
+            services.AddAuthentication()
+                .AddGoogle(options => {
+                    var googleAuthNSection = Configuration.GetSection("Authentication:Google");
+                    options.ClientId = googleAuthNSection["ClientId"];
+                    options.ClientSecret = googleAuthNSection["ClientSecret"];
+                });
 
             services.Configure<ServiceConfig>(config => {
                 config.Services = new List<ServiceDescriptor>(services);
@@ -211,6 +231,7 @@ namespace Microsoft.eShopWeb.Web {
             app.UseHttpsRedirection();
             app.UseCookiePolicy();
             app.UseAuthentication();
+
             app.UseAuthorization();
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
