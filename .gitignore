@@ -260,5 +260,5 @@ pub/
 \.vscode/
 
 #NAO ESQUECER DE TIRAR O TRAÇO ANTES
-appsettings.Azure.json
 appsettings.json
+appsettings.Azure.json
