@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
 using System.Net;
+using Microsoft.Extensions.Logging;
 
 namespace Microsoft.eShopWeb.Infrastructure.Services
 {
@@ -14,19 +15,21 @@ namespace Microsoft.eShopWeb.Infrastructure.Services
         private ISendGridClient _sendGridClient;
         private IConfiguration _configuration;
 
+        private readonly ILogger<EmailSender> _logger;
+
         public EmailSender(
             ISendGridClient sendGridClient,
-            IConfiguration configuration)
+            IConfiguration configuration, ILogger<EmailSender> logger)
         {
             _sendGridClient = sendGridClient;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public async Task SendEmailAsync(string email, string subject, string message)
         {
 
             var from = _configuration.GetValue<string>("SendGrid:from");
-            var fromName = _configuration.GetValue<string>("SendGrid:fromName");
 
             if (string.IsNullOrEmpty(from))
             {
@@ -38,6 +41,14 @@ namespace Microsoft.eShopWeb.Infrastructure.Services
             string plainTextContent = string.Empty;
             var msg = MailHelper.CreateSingleEmail(From, To, subject, plainTextContent, message);
             var response = await _sendGridClient.SendEmailAsync(msg);
+            if (response.StatusCode == HttpStatusCode.Accepted)
+            {
+                _logger.LogInformation($"Send e-mail.");
+            }
+            else
+            {
+                _logger.LogError($"Send e-mail not send");
+            }
 
         }
     }

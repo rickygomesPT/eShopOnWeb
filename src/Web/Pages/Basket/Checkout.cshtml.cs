@@ -20,15 +20,19 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
         private string _username = null;
         private readonly IBasketViewModelService _basketViewModelService;
 
+        private readonly IEmailSender _emailSender;
+
         public CheckoutModel(IBasketService basketService,
             IBasketViewModelService basketViewModelService,
             SignInManager<ApplicationUser> signInManager,
-            IOrderService orderService)
+            IOrderService orderService,
+            IEmailSender emailSender)
         {
             _basketService = basketService;
             _signInManager = signInManager;
             _orderService = orderService;
             _basketViewModelService = basketViewModelService;
+            _emailSender = emailSender;
         }
 
         public BasketViewModel BasketModel { get; set; } = new BasketViewModel();
@@ -44,6 +48,8 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
             await _basketService.SetQuantities(BasketModel.Id, items);
 
             await _orderService.CreateOrderAsync(BasketModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
+
+            await _emailSender.SendEmailAsync("rickygomes1994@hotmail.com", "Compra Efectuada", "Teste Email");
 
             await _basketService.DeleteBasketAsync(BasketModel.Id);
 
