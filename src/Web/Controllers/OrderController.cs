@@ -4,6 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.eShopWeb.Web.Features.MyOrders;
 using Microsoft.eShopWeb.Web.Features.OrderDetails;
 using System.Threading.Tasks;
+using IronPdf;
+using Microsoft.eShopWeb.Web.Services;
+using System;
+using Microsoft.eShopWeb.Webn.Services;
 
 namespace Microsoft.eShopWeb.Web.Controllers
 {
@@ -13,10 +17,12 @@ namespace Microsoft.eShopWeb.Web.Controllers
     public class OrderController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly IViewRenderService _viewRenderService;
 
-        public OrderController(IMediator mediator)
+        public OrderController(IMediator mediator, IViewRenderService viewRenderService)
         {
             _mediator = mediator;
+            _viewRenderService = viewRenderService;
         }
 
         [HttpGet()]
@@ -38,6 +44,24 @@ namespace Microsoft.eShopWeb.Web.Controllers
             }
 
             return View(viewModel);
+        }
+
+        //HTTPtoPDF
+        [HttpGet("{orderId}/pdf")]
+        public async Task<IActionResult> DetailPdf(int orderId)
+        {
+            var viewResult = await Detail(orderId) as ViewResult;
+            var viewName = "Order/Detail_Doc";
+            var html = await _viewRenderService.RenderToStringAsync(viewName, viewResult.Model);
+            //var uri = new Uri(Url.Action("Detail", "Order", new { orderId = orderId }));
+
+            // Create a PDF from any existing web page
+            var Renderer = new IronPdf.HtmlToPdf();
+            //var PDF1 = await Renderer.RenderUrlAsPdfAsync(uri);
+            var PDF = await Renderer.RenderHtmlAsPdfAsync(html);
+
+
+            return File(PDF.BinaryData, "application/pdf", "Catalog.pdf");
         }
     }
 }
