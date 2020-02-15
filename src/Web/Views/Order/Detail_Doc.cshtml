@@ -1,12 +1,4 @@
 ﻿@model OrderViewModel
-@{
-    ViewData["Title"] = "My Order History";
-}
-@{
-    ViewData["Title"] = "Order Detail";
-}
-
-<a asp-controller="Order" asp-action="DetailPdf" asp-route-orderId="@Model.OrderNumber" target="_blank"><img src="~/images/pdf_icon.png"></a>
 
 <div class="esh-orders-detail">
     <div class="container">
