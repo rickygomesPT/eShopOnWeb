@@ -111,5 +111,5 @@
   font-size: 28px;
   font-weight: 900;
   text-align: center; }
-  .esh-catalog-price::before {
-    content: '$'; }
+  /*.esh-catalog-price::before {
+    content: '$'; }*/

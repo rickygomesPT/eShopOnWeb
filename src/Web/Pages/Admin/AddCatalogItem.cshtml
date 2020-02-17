@@ -30,6 +30,14 @@
                     <span asp-validation-for="CatalogModel.PriceUnit"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="CatalogModel.ShowPrice"></label>
+                    <select asp-for="CatalogModel.ShowPrice" class="form-control">
+                        <option selected="selected" value="true">Yes</option>
+                        <option value="false">No</option>
+                    </select>
+                    <span asp-validation-for="CatalogModel.ShowPrice"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="CatalogModel.qntStock"></label>
                     <input asp-for="CatalogModel.qntStock" class="form-control" />
                     <span asp-validation-for="CatalogModel.qntStock"></span>

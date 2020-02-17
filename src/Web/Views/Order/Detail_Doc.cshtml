@@ -13,7 +13,7 @@
             <article class="esh-orders-detail-items row">
                 <section class="esh-orders-detail-item col-xs-3">@Model.OrderNumber</section>
                 <section class="esh-orders-detail-item col-xs-3">@Model.OrderDate</section>
-                <section class="esh-orders-detail-item col-xs-2">$@Model.Total.ToString("N2")</section>
+                <section class="esh-orders-detail-item col-xs-2">$@Model.Total.ToString("C")</section>
                 <section class="esh-orders-detail-item col-xs-3">@Model.Status</section>
             </article>
         </section>

@@ -1,8 +1,16 @@
 ﻿@page
+@using Microsoft.Extensions.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IStringLocalizer<IndexModel> TextLocalizer
+@inject IHtmlLocalizer<IndexModel> HtmlLocalizer
+@model IndexModel
 @{
     ViewData["Title"] = "Catalog";
-    @model IndexModel
+
 }
+<h1>@TextLocalizer["hello"]</h1>
+    
+
 <section class="esh-catalog-hero">
     <div class="container">
         <img class="esh-catalog-title" src="~/images/main_banner_text.png" />
@@ -42,26 +50,24 @@
             case ResultView.List:
                 {
                     Func<dynamic, object> listItemTemplate = @<partial name="_product_mini" for="@item" />;
-                    
-                    var listViewModel = new ListViewModel
-                {
-                    Items = Model.CatalogModel.CatalogItems,
-                    ItemTemplate = listItemTemplate
-                };
 
-                <partial name="ResultViews/_listView" for="@listViewModel" />
-                break;
-            }
-            case ResultView.Table:
-            <partial name="ResultViews/_tableView" for="CatalogModel.CatalogItems" />
-            break;
-            }
-            @await Html.PartialAsync("_pagination", Model.CatalogModel.PaginationInfo);
-            }
-            else
-            {
-            <div class="esh-catalog-items row">
-                THERE ARE NO RESULTS THAT MATCH YOUR SEARCH
-            </div>
-            }
+var listViewModel = new ListViewModel
+{
+Items = Model.CatalogModel.CatalogItems,
+ItemTemplate = listItemTemplate
+};
+
+<partial name="ResultViews/_listView" for="@listViewModel" />
+break;
+}
+case ResultView.Table:
+<partial name="ResultViews/_tableView" for="CatalogModel.CatalogItems" />
+break;
+}
+@await Html.PartialAsync("_pagination", Model.CatalogModel.PaginationInfo);
+}
+else
+{
+<div class="esh-catalog-items row"> THERE ARE NO RESULTS THAT MATCH YOUR SEARCH </div>
+}
 </div>

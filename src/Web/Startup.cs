@@ -33,11 +33,21 @@ using Microsoft.Extensions.Hosting;
 
 using Newtonsoft.Json;
 
+using IronPdf;
+using Microsoft.eShopWeb.Webn.Services;
 using Web.Extensions;
 using Web.Extensions.Middleware;
 using SendGrid;
+using Microsoft.AspNetCore.Mvc.Razor;
+using System.Globalization;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Localization;
 
 [assembly : ApiConventionType(typeof(DefaultApiConventions))]
+[assembly: ResourceLocation("Resources")]
+[assembly: RootNamespace("Microsoft.eShopWeb.Web")]
 namespace Microsoft.eShopWeb.Web {
     public class Startup {
         private IServiceCollection _services;
@@ -132,6 +142,11 @@ namespace Microsoft.eShopWeb.Web {
 
             services.AddMediatR(typeof(BasketViewModelService).Assembly);
 
+            services.AddTransient<IEmailSender, EmailSender>();
+
+            services.AddScoped<IViewRenderService, ViewRenderService>();
+            services.AddHttpContextAccessor();
+
             if (_webHostEnvironment.IsDevelopment()) {
                 services.AddSingleton<ICurrencyService, CurrencyServiceStatic>();
             } else {
@@ -146,8 +161,6 @@ namespace Microsoft.eShopWeb.Web {
                 var key = Configuration.GetValue<string>("SendGrid:ApiKey");
                 return new SendGridClient(key);
             });
-            services.AddTransient<IEmailSender, EmailSender>();
-
             //GOOGLE SIGN-IN
             var configurationBuilder = new ConfigurationBuilder();
             configurationBuilder.AddConfiguration(Configuration);
@@ -163,11 +176,19 @@ namespace Microsoft.eShopWeb.Web {
                 options.ConstraintMap["slugify"] = typeof(SlugifyParameterTransformer);
             });
 
+            //SERVICO TRADUCAO
+            services.AddLocalization(options => {
+                options.ResourcesPath = "Resources";
+            });
             services.AddMvc(options => {
                 options.Conventions.Add(new RouteTokenTransformerConvention(
                     new SlugifyParameterTransformer()));
+            })
+                .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix, options => {
+                    options.ResourcesPath = "Resources";
+                })
+                .AddDataAnnotationsLocalization();
 
-            });
             services.AddRazorPages(options => {
                 options.Conventions.AuthorizePage("/Basket/Checkout");
             });
@@ -225,6 +246,25 @@ namespace Microsoft.eShopWeb.Web {
             }
 
             app.UseStaticFiles();
+
+            //traducao
+            var supportedCultures = new[]
+            {
+                "en-US",
+                "pt-PT",
+            };
+
+            app.UseRequestLocalization(options => {
+
+                options.SetDefaultCulture("pt-PT");
+                options.AddSupportedCultures(supportedCultures);
+                options.AddSupportedUICultures(supportedCultures);
+                options.RequestCultureProviders = new IRequestCultureProvider[] {
+                    new QueryStringRequestCultureProvider(),
+                    new CookieRequestCultureProvider(),
+                    new CookieRequestCultureProvider(),
+                };
+            });
 
             app.UseRouting();
 

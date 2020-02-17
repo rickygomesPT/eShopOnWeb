@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.eShopWeb.Web.ViewModels;
 using System;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.eShopWeb.Web.Controllers.Api
 {
@@ -10,6 +13,13 @@ namespace Microsoft.eShopWeb.Web.Controllers.Api
     public class CatalogController : BaseApiController
     {
         private readonly ICatalogViewModelService _catalogViewModelService;
+
+        private readonly IStringLocalizer<CatalogController> _localizer;
+
+        public CatalogController(IStringLocalizer<CatalogController> localizer)
+        {
+            _localizer = localizer;
+        }
 
         public CatalogController(ICatalogViewModelService catalogViewModelService) => _catalogViewModelService = catalogViewModelService;
 
@@ -34,6 +44,18 @@ namespace Microsoft.eShopWeb.Web.Controllers.Api
             } catch (ModelNotFoundException) {
                 return NotFound();
             }
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            return LocalRedirect(returnUrl);
         }
     }
 }

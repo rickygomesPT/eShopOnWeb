@@ -1,8 +1,20 @@
-﻿@{ 
+﻿@{
     Layout = "/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Manage your account</h2>
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+@using Microsoft.AspNetCore.Http.Features
+
+
+@inject IViewLocalizer Localizer
+
+@{
+    var uiCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture;
+}
+
+<h2>@Localizer["Manage your account"]</h2>
 
 <div>
     <h4>Change your account settings</h4>
@@ -20,4 +32,4 @@
 @section Scripts {
     @RenderSection("Scripts", required: false)
 }
-        
+

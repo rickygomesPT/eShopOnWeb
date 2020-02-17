@@ -1,4 +1,16 @@
-﻿<!DOCTYPE html>
+﻿@using System.Globalization
+@using Microsoft.AspNetCore.Http.Features
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+
+
+@inject IViewLocalizer Localizer
+
+@{
+    var uiCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture;
+}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -32,6 +44,7 @@
                         <a asp-area="" asp-page="/Index">
                             <img src="~/images/brand.png" alt="eShop On Web" />
                         </a>
+                        <h3>@Localizer["Testar língua."]</h3>
                     </section>
                     <partial name="_LoginPartial" />
                 </article>
@@ -41,7 +54,9 @@
         <footer class="esh-app-footer footer">
             <div class="container">
                 <article class="row">
-                    <section class="col-sm-6"></section>
+                    <section class="col-sm-6">
+                        @await Html.PartialAsync("_SelectLanguagePartial")
+                    </section>
                     <section class="col-sm-6">
                         <div class="esh-app-footer-text hidden-xs"> e-ShopOnWeb. All rights reserved </div>
                     </section>

@@ -11,6 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Localization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace Microsoft.eShopWeb.Web.Controllers
 {
@@ -25,6 +28,8 @@ namespace Microsoft.eShopWeb.Web.Controllers
         private readonly IAppLogger<ManageController> _logger;
         private readonly UrlEncoder _urlEncoder;
 
+        private readonly IStringLocalizer<ManageController> _localizer;
+
         private const string AuthenticatorUriFormat = "otpauth://totp/{0}:{1}?secret={2}&issuer={0}&digits=6";
 
         public ManageController(
@@ -32,13 +37,15 @@ namespace Microsoft.eShopWeb.Web.Controllers
           SignInManager<ApplicationUser> signInManager,
           IEmailSender emailSender,
           IAppLogger<ManageController> logger,
-          UrlEncoder urlEncoder)
+          UrlEncoder urlEncoder,
+          IStringLocalizer<ManageController> localizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
             _urlEncoder = urlEncoder;
+            _localizer = localizer;
         }
 
         [TempData]
@@ -495,6 +502,19 @@ namespace Microsoft.eShopWeb.Web.Controllers
                 _urlEncoder.Encode("eShopOnWeb"),
                 _urlEncoder.Encode(email),
                 unformattedKey);
+        }
+
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+
+            return LocalRedirect(returnUrl);
         }
     }
 }

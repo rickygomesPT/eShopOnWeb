@@ -10,8 +10,8 @@
 
     @if(Model.ShowPrice){
         <span class="esh-catalog-price">
-            <span>@Model.Price.ToString("N2")</span>
-            @Model.PriceUnit.ToString()
+            <span>@Model.Price.ToString("C")</span>
+            @*@Model.PriceUnit.ToString()*@
         </span>
     
     }
