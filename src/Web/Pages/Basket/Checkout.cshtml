@@ -1,5 +1,18 @@
 ﻿@page
-    @model CheckoutModel
+@model CheckoutModel
+
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+@using Microsoft.AspNetCore.Http.Features
+
+
+@inject IViewLocalizer Localizer
+
+@{
+    var uiCulture = HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture;
+}
+
 @{
     ViewData["Title"] = "Checkout Complete";
 }
@@ -10,7 +23,7 @@
 </section>
 
 <div class="container">
-    <h1>Thanks for your Order!</h1>
+    <h1>@Localizer["Thanks for your Order!"]</h1>
 
-    <a asp-page="/Index">Continue Shopping...</a>
+    <a asp-page="/Index">@Localizer["Continue Shopping..."]</a>
 </div>

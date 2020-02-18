@@ -3,14 +3,26 @@
     ViewData["Title"] = "My Order History";
 }
 
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+@using Microsoft.AspNetCore.Http.Features
+
+
+@inject IViewLocalizer Localizer
+
+@{
+    var uiCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture;
+}
+
 <div class="esh-orders">
     <div class="container">
         <h1>@ViewData["Title"]</h1>
         <article class="esh-orders-titles row">
-            <section class="esh-orders-title col-xs-2">Order number</section>
-            <section class="esh-orders-title col-xs-4">Date</section>
+            <section class="esh-orders-title col-xs-2">@Localizer["Order number"]</section>
+            <section class="esh-orders-title col-xs-4">@Localizer["Date"]</section>
             <section class="esh-orders-title col-xs-2">Total</section>
-            <section class="esh-orders-title col-xs-2">Status</section>
+            <section class="esh-orders-title col-xs-2">@Localizer["Status"]</section>
             <section class="esh-orders-title col-xs-2"></section>
         </article>
         @if (Model != null && Model.Any())
@@ -23,18 +35,18 @@
                     <section class="esh-orders-item col-xs-2">$ @Html.DisplayFor(modelItem => item.Total)</section>
                     <section class="esh-orders-item col-xs-2">@Html.DisplayFor(modelItem => item.Status)</section>
                     <section class="esh-orders-item col-xs-1">
-                        <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">Detail</a>
+                        <a class="esh-orders-link" asp-controller="Order" asp-action="Detail" asp-route-orderId="@item.OrderNumber">@Localizer["Order details"]</a>
                     </section>
                     <section class="esh-orders-item col-xs-1">
                         @if (item.Status.ToLower() == "submitted")
                         {
                             <a asp-controller="Order" asp-action="DetailPdf" asp-route-orderId="@item.OrderNumber" target="_blank"><img src="images/pdf_icon.png"></a>
 
-                            <a class="esh-orders-link" asp-controller="Order" asp-action="cancel" asp-route-orderId="@item.OrderNumber">Cancel</a>
+                            <a class="esh-orders-link" asp-controller="Order" asp-action="cancel" asp-route-orderId="@item.OrderNumber">@Localizer["Cancel"]</a>
                         }
                     </section>
                 </article>
-            } 
+            }
         }
     </div>
 </div>

@@ -117,7 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="Admin" xml:space="preserve">
+    <value>Administrador</value>
+  </data>
   <data name="Manage your account" xml:space="preserve">
-    <value>Configurações da conta</value>
+    <value>Alterar conta</value>
+  </data>
+  <data name="My account" xml:space="preserve">
+    <value>Minha Conta</value>
+  </data>
+  <data name="My orders" xml:space="preserve">
+    <value>Minhas Encomendas</value>
+  </data>
+  <data name="My wishlist" xml:space="preserve">
+    <value>Lista de Desejos</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Registar</value>
   </data>
 </root>

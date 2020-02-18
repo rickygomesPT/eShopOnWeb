@@ -1,4 +1,16 @@
-﻿
+﻿@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+@using Microsoft.AspNetCore.Http.Features
+
+
+@inject IViewLocalizer Localizer
+
+@{
+    var uiCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture;
+}
+
+
 @if (Context.User.Identity.IsAuthenticated)
 {
     <section class="col-lg-4 col-md-5 col-xs-12">
@@ -13,23 +25,23 @@
                     {
                         <a class="esh-identity-item"
                            asp-page="/Admin/Index">
-                            <div class="esh-identity-name esh-identity-name--upper">Admin</div>
+                            <div class="esh-identity-name esh-identity-name--upper">@Localizer["Admin"]</div>
                         </a>
                     }
                     <a class="esh-identity-item"
                        asp-controller="Order"
                        asp-action="MyOrders">
-                        <div class="esh-identity-name esh-identity-name--upper">My orders</div>
-                    </a>
+                        <div class="esh-identity-name esh-identity-name--upper">@Localizer["My orders"]</div>
+</a>
                     <a class="esh-identity-item"
                        asp-controller="Manage"
                        asp-action="MyAccount">
-                        <div class="esh-identity-name esh-identity-name--upper">My account</div>
-                    </a>
+                        <div class="esh-identity-name esh-identity-name--upper">@Localizer["My account"]</div>
+</a>
                     <a class="esh-identity-item"
                        asp-page="/Wishlist/Index">
-                        <div class="esh-identity-name esh-identity-name--upper">My wishlist</div>
-                    </a>
+                        <div class="esh-identity-name esh-identity-name--upper">@Localizer["My wishlist"]</div>
+</a>
                     <a class="esh-identity-item" href="javascript:document.getElementById('logoutForm').submit()">
                         <div class="esh-identity-name esh-identity-name--upper">Log Out</div>
                         <img class="esh-identity-image" src="~/images/logout.png">
@@ -54,7 +66,7 @@ else
                         Login
                     </a>
                     <a asp-area="Identity" asp-page="/Account/Register" class="esh-identity-name esh-identity-name--upper">
-                        Registar
+                        @Localizer["Register"]
                     </a>
                 </div>
             </section>

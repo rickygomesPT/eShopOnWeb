@@ -1,4 +1,17 @@
 ﻿@page "{handler?}"
+
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+@using Microsoft.AspNetCore.Http.Features
+
+
+@inject IViewLocalizer Localizer
+
+@{
+    var uiCulture = HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture;
+}
+
 @model IndexModel
 @{
     ViewData["Title"] = "Basket";
@@ -16,11 +29,11 @@
         <form method="post">
             <article class="esh-basket-titles row">
                 <br />
-                <section class="esh-basket-title col-xs-3">Produto</section>
+                <section class="esh-basket-title col-xs-3">@Localizer["Product"]</section>
                 <section class="esh-basket-title col-xs-3 hidden-lg-down"></section>
-                <section class="esh-basket-title col-xs-2">Price</section>
-                <section class="esh-basket-title col-xs-2">Quantity</section>
-                <section class="esh-basket-title col-xs-2">Cost</section>
+                <section class="esh-basket-title col-xs-2">@Localizer["Price"]</section>
+                <section class="esh-basket-title col-xs-2">@Localizer["Quantity"]</section>
+                <section class="esh-basket-title col-xs-2">@Localizer["Cost"]</section>
             </article>
             <div class="esh-catalog-items row">
                 @for (int i = 0; i < Model.BasketModel.Items.Count; i++)
@@ -40,12 +53,12 @@
                             <section class="esh-basket-item esh-basket-item--middle esh-basket-item--mark col-xs-2">$ @Math.Round(item.Quantity * item.UnitPrice, 2).ToString("N2")</section>
                         </div>
                         <div class="row">
-                            
+
                         </div>
                     </article>
                     @*<div class="esh-catalog-item col-md-4">
-                @item.ProductId
-            </div>*@
+                            @item.ProductId
+                        </div>*@
 
                 }
 
@@ -69,17 +82,17 @@
                 </div>
                 <div class="row">
                     <section class="esh-basket-item col-xs-1">
-                        <a asp-page="/Index" class="btn esh-basket-checkout text-white">[ Continue Shopping..]</a>
+                        <a asp-page="/Index" class="btn esh-basket-checkout text-white">@Localizer["Continue Shopping"]</a>
                     </section>
                     <section class="esh-basket-item col-xs-push-7 col-xs-4">
 
                         <button class="btn esh-basket-checkout" name="updatebutton" value="" type="submit"
                                 asp-page-handler="Update">
-                            [ Update ]
+                            @Localizer["Update"]
                         </button>
                         <input type="submit" asp-page="Checkout"
                                class="btn esh-basket-checkout"
-                               value="[ Checkout ]" name="action" />
+                               value="@Localizer["Checkout"]" name="action" />
                     </section>
                 </div>
             </div>
@@ -87,12 +100,12 @@
     }
     else
     {
-        <h3 class="esh-catalog-items row">
-            Basket is empty.
-        </h3>
-        
+<h3 class="esh-catalog-items row">
+    @Localizer["Basket is empty."]
+</h3>
+
         <section class="esh-basket-item">
-            <a asp-page="/Index" class="btn esh-basket-checkout text-white">[ Continue Shopping..]</a>
+            <a asp-page="/Index" class="btn esh-basket-checkout text-white">@Localizer["Continue Shopping"]</a>
         </section>
     }
 </div>

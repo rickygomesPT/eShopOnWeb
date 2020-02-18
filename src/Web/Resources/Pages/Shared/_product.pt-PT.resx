@@ -117,10 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Alterar conta" xml:space="preserve">
-    <value>Manage your account</value>
+  <data name="Add to basket" xml:space="preserve">
+    <value>Adicionar Carrinho</value>
   </data>
-  <data name="Testar língua." xml:space="preserve">
-    <value>Test language.</value>
+  <data name="Add to wishlist" xml:space="preserve">
+    <value>Adicionar Lista Desejos</value>
   </data>
 </root>

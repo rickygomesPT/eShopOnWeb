@@ -3,13 +3,24 @@
 @using Microsoft.AspNetCore.Mvc.Localization
 @inject IStringLocalizer<IndexModel> TextLocalizer
 @inject IHtmlLocalizer<IndexModel> HtmlLocalizer
+
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+@using Microsoft.AspNetCore.Http.Features
+
+
+@inject IViewLocalizer Localizer
+
+@{
+    var uiCulture = HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture;
+}
+
 @model IndexModel
 @{
     ViewData["Title"] = "Catalog";
 
 }
-<h1>@TextLocalizer["hello"]</h1>
-    
 
 <section class="esh-catalog-hero">
     <div class="container">
@@ -19,15 +30,15 @@
 <section class="esh-catalog-filters">
     <div class="container">
         <form method="get">
-            <label class="esh-catalog-label" data-title="View Type">
+            <label class="esh-catalog-label" data-title="@Localizer["view type"]">
                 <select asp-for="@Model.CatalogModel.ResultView"
                         asp-items="@Model.CatalogModel.ResultViews" class="esh-catalog-filter"></select>
             </label>
-            <label class="esh-catalog-label" data-title="brand">
+            <label class="esh-catalog-label" data-title="@Localizer["brand"]">
                 <select asp-for="@Model.CatalogModel.BrandFilterApplied"
                         asp-items="@Model.CatalogModel.Brands" class="esh-catalog-filter"></select>
             </label>
-            <label class="esh-catalog-label" data-title="type">
+            <label class="esh-catalog-label" data-title="@Localizer["type"]">
                 <select asp-for="@Model.CatalogModel.TypesFilterApplied"
                         asp-items="@Model.CatalogModel.Types"
                         class="esh-catalog-filter"></select>

@@ -1,5 +1,17 @@
 ﻿@model PaginationInfoViewModel
 
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+@using Microsoft.AspNetCore.Http.Features
+
+
+@inject IViewLocalizer Localizer
+
+@{
+	var uiCulture = Context.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture;
+}
+
 @{
 	IDictionary<string, string> buildQueryStringDict(int page)
 	{
@@ -18,13 +30,13 @@
 					   id="Previous"
 					   asp-all-route-data="@buildQueryStringDict(Model.ActualPage - 1)"
 					   aria-label="Previous">
-						Previous
+						@Localizer["Previous"]
 					</a>
 				</div>
 
 				<div class="col-md-8 col-xs-12">
 					<span class="esh-pager-item">
-						Showing @Model.ItemsPerPage of @Model.TotalItems products - Page @(Model.ActualPage + 1) - @Model.TotalPages
+						@Localizer["Showing"] @Model.ItemsPerPage @Localizer["of"] @Model.TotalItems @Localizer["products - Page"] @(Model.ActualPage + 1) - @Model.TotalPages
 					</span>
 				</div>
 
@@ -33,7 +45,7 @@
 					   id="Next"
 					   asp-all-route-data="@buildQueryStringDict(Model.ActualPage + 1)"
 					   aria-label="Next">
-						Next
+						@Localizer["Next"]
 					</a>
 				</div>
 			</nav>

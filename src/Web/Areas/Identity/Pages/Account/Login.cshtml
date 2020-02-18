@@ -3,6 +3,18 @@
 @inject IConfiguration Configuration
 @model LoginModel
 
+@using Microsoft.AspNetCore.Localization
+@using Microsoft.AspNetCore.Mvc.Localization
+@using System.Globalization
+@using Microsoft.AspNetCore.Http.Features
+
+
+@inject IViewLocalizer Localizer
+
+@{
+    var uiCulture = HttpContext.Features.Get<IRequestCultureFeature>().RequestCulture.UICulture;
+}
+
 @{
     ViewData["Title"] = "Log in";
 }
@@ -35,18 +47,20 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-default">Log in</button>
-                    </div>
+                        <button type="submit" class="btn btn-default">@Localizer["Log in"]</button> <hr>
+                        <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" data-prompt="select_account"></div>
+                        <a href="#" onclick="signOut();">@Localizer["Sign out"]</a>
+</div>
                     <div class="form-group">
                         <p>
-                            <a asp-page="./ForgotPassword">Forgot your password?</a>
-                        </p>
+                            <a asp-page="./ForgotPassword">@Localizer["Forgot your password?"]</a>
+</p>
                         <p>
-                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                        </p>
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">@Localizer["Register as a new user"]</a>
+</p>
                     </div>
                     <p>
-                        Note that for demo purposes you don't need to register and can login with these credentials:
+                        @Localizer["Credentials:"]
                     </p>
                     <p>
                         User:<b>demouser@microsoft.com or admin@microsoft.com</b>
@@ -54,9 +68,6 @@
                     <p>
                         Password: <b>Pass@word1</b>
                     </p>
-
-                    <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark" data-prompt="select_account"></div>
-                    <a href="#" onclick="signOut();">Sign out</a>
                 </form>
             </section>
         </div>
