@@ -10,7 +10,9 @@ namespace Microsoft.eShopWeb.UnitTests.Builders
         public int TestCatalogItemId => 234;
         public string TestProductName => "Test Product Name";
         public string TestPictureUri => "http://test.com/image.jpg";
+
         public decimal TestUnitPrice = 1.23m;
+
         public int TestUnits = 3;
         public CatalogItemOrdered TestCatalogItemOrdered { get; }
 

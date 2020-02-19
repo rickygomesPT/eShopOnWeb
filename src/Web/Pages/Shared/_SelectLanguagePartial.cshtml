@@ -5,22 +5,31 @@
 @using Microsoft.Extensions.Options
 
 @inject IViewLocalizer Localizer
-@inject IOptions<RequestLocalizationOptions> LocOptions
+@inject RequestLocalizationOptions LocOptions
 
 @{
     var requestCulture = Context.Features.Get<IRequestCultureFeature>();
-    var cultureItems = LocOptions.Value.SupportedUICultures
-        .Select(c => new SelectListItem { Value = c.Name, Text = c.DisplayName })
+    var cultureItems =  LocOptions.SupportedUICultures
+        .Select(c => new SelectListItem {
+            Value = c.Name, Text = c.DisplayName,
+            Selected = c.Name.Equals(requestCulture.RequestCulture.Culture.Name, StringComparison.OrdinalIgnoreCase) })
         .ToList();
     var returnUrl = string.IsNullOrEmpty(Context.Request.Path) ? "~/" : $"~{Context.Request.Path.Value}";
 }
-
+@foreach(var c in cultureItems)
+{
+    <p>@c.Value</p>
+    <p>@c.Selected</p>
+}
 <div>
-    <form id="selectLanguage" asp-controller="Manage"
-          asp-action="SetLanguage" asp-route-returnUrl="@returnUrl"
+    @requestCulture.RequestCulture.Culture.Name
+    @requestCulture.RequestCulture.Culture.Name
+    <form id="selectLanguage" asp-controller="Manage" asp-action="SetLanguage" asp-route-returnUrl="@returnUrl"
           method="post" class="form-horizontal" role="form">
         <label asp-for="@requestCulture.RequestCulture.UICulture.Name">@Localizer["Language:"]</label>
-        <select name="culture"onchange="this.form.submit();"asp-for="@requestCulture. .RequestCulture.UICulture.Name" asp-items="cultureItems">
+        <select name="culture" onchange="this.form.submit();"
+                asp-for="@requestCulture.RequestCulture.UICulture.Name"
+                asp-items="cultureItems">
         </select>
     </form>
 </div>

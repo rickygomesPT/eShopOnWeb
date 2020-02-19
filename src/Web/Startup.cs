@@ -200,6 +200,25 @@ namespace Microsoft.eShopWeb.Web {
 
             services.AddHealthChecks();
 
+            //traducao
+            var supportedCultures = new[]
+            {
+                "en-US",
+                "pt-PT",
+            }.Select(cultureCode => new CultureInfo(cultureCode)).ToList();
+            var requestLocalizationOptions = new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture(supportedCultures.FirstOrDefault()),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures,
+                RequestCultureProviders = new IRequestCultureProvider[] {
+                    new QueryStringRequestCultureProvider(),
+                    new CookieRequestCultureProvider(),
+                }
+            };
+            services.AddSingleton<RequestLocalizationOptions>(requestLocalizationOptions);
+
+
             //LOGIN GOOGLE
             services.AddAuthentication()
                 .AddGoogle(options => {
@@ -218,7 +237,7 @@ namespace Microsoft.eShopWeb.Web {
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, RequestLocalizationOptions requestLocalizationOptions) {
             app.UseBenchmarking();
             app.UseHealthChecks("/health",
                 new HealthCheckOptions {
@@ -247,24 +266,8 @@ namespace Microsoft.eShopWeb.Web {
 
             app.UseStaticFiles();
 
-            //traducao
-            var supportedCultures = new[]
-            {
-                "en-US",
-                "pt-PT",
-            };
 
-            app.UseRequestLocalization(options => {
-
-                options.SetDefaultCulture("pt-PT");
-                options.AddSupportedCultures(supportedCultures);
-                options.AddSupportedUICultures(supportedCultures);
-                options.RequestCultureProviders = new IRequestCultureProvider[] {
-                    new QueryStringRequestCultureProvider(),
-                    new CookieRequestCultureProvider(),
-                    new CookieRequestCultureProvider(),
-                };
-            });
+            app.UseRequestLocalization(requestLocalizationOptions);
 
             app.UseRouting();
 

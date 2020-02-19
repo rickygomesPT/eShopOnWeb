@@ -49,11 +49,12 @@ namespace Microsoft.eShopWeb.Web.Controllers.Api
         }
 
         /// Update Catalog brand (por acabar)
-        [HttpPut]
-        public async Task<ActionResult<CatalogBrand>> Put(CatalogBrand catalogBrand){
+        [HttpPut("{id}")]
+        public async Task<ActionResult<CatalogBrand>> Put(int id, string brand){
             try {
-                var brands = await _brandRepository.ListAllAsync();
-                await _brandRepository.UpdateAsync(catalogBrand);
+                var brands = await _brandRepository.GetByIdAsync(id);
+                brands.Brand = brand;
+                await _brandRepository.UpdateAsync(brands);
                 return Ok();
             } catch (ModelNotFoundException) {
                 return NotFound();
