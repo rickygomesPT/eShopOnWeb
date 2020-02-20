@@ -26,9 +26,9 @@ namespace Microsoft.eShopWeb.UnitTests.MediatorHandlers.OrdersTests
         [Fact]
         public async Task NotReturnNull_If_OrdersArePresent()
         {
-            var request = new GetMyOrders("SomeUserName");
+            var request = new GetAdminOrders("SomeUserName");
 
-            var handler = new GetMyOrdersHandler(_mockOrderRepository.Object);
+            var handler = new GetAdminOrdersHandler(_mockOrderRepository.Object);
 
             var result = await handler.Handle(request, CancellationToken.None);
 
