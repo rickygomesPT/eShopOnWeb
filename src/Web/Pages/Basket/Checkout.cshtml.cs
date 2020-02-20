@@ -49,7 +49,7 @@ namespace Microsoft.eShopWeb.Web.Pages.Basket
 
             await _orderService.CreateOrderAsync(BasketModel.Id, new Address("123 Main St.", "Kent", "OH", "United States", "44240"));
 
-            await _emailSender.SendEmailAsync("andreiacarvalhopereira@gmail.com", "Compra Efectuada", "Teste Email");
+            await _emailSender.SendEmailAsync(User.Identity.Name, "Compra Efectuada", "Conteúdo da compra");
 
             await _basketService.DeleteBasketAsync(BasketModel.Id);
 

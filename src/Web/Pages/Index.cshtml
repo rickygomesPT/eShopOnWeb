@@ -1,13 +1,11 @@
 ﻿@page
 @using Microsoft.Extensions.Localization
 @using Microsoft.AspNetCore.Mvc.Localization
-@inject IStringLocalizer<IndexModel> TextLocalizer
-@inject IHtmlLocalizer<IndexModel> HtmlLocalizer
-
 @using Microsoft.AspNetCore.Localization
-@using Microsoft.AspNetCore.Mvc.Localization
 @using System.Globalization
 @using Microsoft.AspNetCore.Http.Features
+@inject IStringLocalizer<IndexModel> TextLocalizer
+@inject IHtmlLocalizer<IndexModel> HtmlLocalizer
 
 
 @inject IViewLocalizer Localizer
@@ -62,23 +60,23 @@
                 {
                     Func<dynamic, object> listItemTemplate = @<partial name="_product_mini" for="@item" />;
 
-var listViewModel = new ListViewModel
-{
-Items = Model.CatalogModel.CatalogItems,
-ItemTemplate = listItemTemplate
-};
+            var listViewModel = new ListViewModel
+            {
+            Items = Model.CatalogModel.CatalogItems,
+            ItemTemplate = listItemTemplate
+            };
 
-<partial name="ResultViews/_listView" for="@listViewModel" />
-break;
-}
-case ResultView.Table:
-<partial name="ResultViews/_tableView" for="CatalogModel.CatalogItems" />
-break;
-}
-@await Html.PartialAsync("_pagination", Model.CatalogModel.PaginationInfo);
-}
-else
-{
-<div class="esh-catalog-items row"> THERE ARE NO RESULTS THAT MATCH YOUR SEARCH </div>
+            <partial name="ResultViews/_listView" for="@listViewModel" />
+            break;
+            }
+            case ResultView.Table:
+            <partial name="ResultViews/_tableView" for="CatalogModel.CatalogItems" />
+            break;
+            }
+            @await Html.PartialAsync("_pagination", Model.CatalogModel.PaginationInfo);
+            }
+            else
+            {
+            <div class="esh-catalog-items row"> THERE ARE NO RESULTS THAT MATCH YOUR SEARCH </div>
 }
 </div>

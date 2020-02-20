@@ -44,7 +44,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Pages\Admin\Orders\" />
     <Folder Include="wwwroot\fonts\" />
     <Folder Include="wwwroot\lib\" />
   </ItemGroup>

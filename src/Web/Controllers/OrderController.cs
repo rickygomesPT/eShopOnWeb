@@ -29,7 +29,7 @@ namespace Microsoft.eShopWeb.Web.Controllers
         [HttpGet()]
         public async Task<IActionResult> MyOrders()
         {
-            var viewModel = await _mediator.Send(new GetMyOrders(User.Identity.Name));
+            var viewModel = await _mediator.Send(new GetAdminOrders(User.Identity.Name));
 
             return View(viewModel);
         }

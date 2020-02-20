@@ -40,7 +40,7 @@
                     <section class="esh-orders-item col-xs-1">
                         @if (item.Status.ToLower() == "submitted")
                         {
-                            <a asp-controller="Order" asp-action="DetailPdf" asp-route-orderId="@item.OrderNumber" target="_blank"><img src="images/pdf_icon.png"></a>
+                            <a asp-controller="Order" asp-action="DetailPdf" asp-route-orderId="@item.OrderNumber" target="_blank"><img src="~/images/pdf_icon.png"></a>
 
                             <a class="esh-orders-link" asp-controller="Order" asp-action="cancel" asp-route-orderId="@item.OrderNumber">@Localizer["Cancel"]</a>
                         }

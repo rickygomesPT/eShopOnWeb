@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.eShopWeb.Web.Extensions;
 
-namespace Microsoft.eShopWeb.Web.Features.MyOrders
+namespace Microsoft.eShopWeb.Web.Features.AdminOrders
 {
     public class GetAdminOrdersHandler : IRequestHandler<GetAdminOrders, IEnumerable<OrderViewModel>>
     {
@@ -20,24 +21,13 @@ namespace Microsoft.eShopWeb.Web.Features.MyOrders
 
         public async Task<IEnumerable<OrderViewModel>> Handle(GetAdminOrders request, CancellationToken cancellationToken)
         {
-            var specification = new CustomerOrdersWithItemsSpecification(request.UserName);
+            var specification = new AdminOrdersSpecification(
+                request.BuyerId,
+                request.CreatedBefore,
+                request.CreatedAfter);
             var orders = await _orderRepository.ListAsync(specification);
 
-            return orders.Select(o => new OrderViewModel
-            {
-                OrderDate = o.OrderDate,
-                OrderItems = o.OrderItems?.Select(oi => new OrderItemViewModel()
-                {
-                    PictureUrl = oi.ItemOrdered.PictureUri,
-                    ProductId = oi.ItemOrdered.CatalogItemId,
-                    ProductName = oi.ItemOrdered.ProductName,
-                    UnitPrice = oi.UnitPrice,
-                    Units = oi.Units
-                }).ToList(),
-                OrderNumber = o.Id,
-                ShippingAddress = o.ShipToAddress,
-                Total = o.Total()
-            });
+            return orders.Select(order => order.CreateViewModel());
         }
     }
 }
